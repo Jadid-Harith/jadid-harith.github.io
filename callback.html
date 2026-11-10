@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign-in code | Ember Station</title><meta name="description" content="Ember Station is a personal publishing tool for Jadid Harith's own short-video channels.">
+<style>
+:root{--bg:#14161b;--panel:#1c1f26;--ink:#ece6d8;--muted:#a59f92;--amber:#ffb23e;--line:#2c3039}
+@media (prefers-color-scheme: light){:root{--bg:#f6f2ea;--panel:#fffaf1;--ink:#24211c;--muted:#6b645a;--amber:#b86a00;--line:#e4dccd}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 max(16px,env(safe-area-inset-left))}
+.wrap{max-width:720px;margin:0 auto;padding:40px 0 64px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:36px}
+.brand{font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);text-decoration:none}
+nav{display:flex;gap:18px}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover,nav a[aria-current]{color:var(--ink)}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.15;margin:0 0 12px;text-wrap:balance}
+h2{font-size:20px;margin:32px 0 8px}
+.lede{color:var(--muted);font-size:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:20px 0}
+footer{margin-top:48px;color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:16px}
+a{color:var(--amber)}
+</style></head><body><div class="wrap">
+<header><a class="brand" href="/">Ember Station</a><nav><a href="/">Home</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></nav></header>
+
+<h1>Sign-in code</h1>
+<p class="lede" id="msg">Reading the code TikTok sent back...</p>
+<div class="card" id="box" hidden>
+<p style="margin-top:0">Copy this code and paste it into the Ember Station terminal window.</p>
+<p><code id="code" style="word-break:break-all;font-size:15px"></code></p>
+<button id="copy" type="button" style="font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--amber);color:#1a1205;cursor:pointer">Copy code</button>
+<p id="copied" hidden>Copied. You can close this tab.</p>
+</div>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+  var code = q.get('code'), err = q.get('error_description') || q.get('error');
+  var msg = document.getElementById('msg');
+  if (code) {
+    document.getElementById('code').textContent = code;
+    document.getElementById('box').hidden = false;
+    msg.textContent = 'TikTok approved the connection.';
+    document.getElementById('copy').onclick = function(){
+      var done = function(){ document.getElementById('copied').hidden = false; };
+      if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, done); else done();
+    };
+  } else if (err) {
+    msg.textContent = 'TikTok did not connect: ' + err;
+  } else {
+    msg.textContent = 'This page shows a sign-in code after you connect a TikTok account to Ember Station. There is nothing to do here right now.';
+  }
+})();
+</script>
+<footer>Ember Station is operated by Jadid Harith, near Paris, France. Contact: <a href="mailto:jadidharith@gmail.com">jadidharith@gmail.com</a></footer>
+</div></body></html>
